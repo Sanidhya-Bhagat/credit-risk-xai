@@ -14,3 +14,5 @@ pydantic==2.13.4
 uvicorn==0.52.4
 streamlit==1.62.0
 xlrd==2.0.2
+pytest==9.1.1
+httpx2==2.12.0
