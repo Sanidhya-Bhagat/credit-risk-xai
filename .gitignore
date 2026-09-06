@@ -46,3 +46,5 @@ htmlcov/
 # Streamlit secrets
 .streamlit/secrets.toml
 Tab Coloring.txt
+
+outputs/
