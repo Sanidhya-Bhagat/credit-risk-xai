@@ -1,7 +1,7 @@
 import pandas as pd
 from fastapi import FastAPI
-
-from api.schemas import CreditRiskInput
+from api.schemas import CreditRiskInput, CreditRiskPrediction
+from src.config import DECISION_THRESHOLD
 from src.model_loader import load_xgboost_model
 from src.risk import get_risk_band
 
@@ -25,7 +25,17 @@ def health_check():
     }
 
 
-@app.post("/predict")
+@app.post(
+    "/predict",
+    response_model=CreditRiskPrediction,
+    summary="Predict credit default risk",
+    description=(
+        "Estimate the probability that a customer will default on their "
+        "credit payment. The API also assigns a probability-based risk "
+        "band and applies the validated 0.30 decision threshold."
+    ),
+    response_description="Credit default risk prediction and decision.",
+)
 def predict_credit_risk(customer: CreditRiskInput):
     """Predict credit default risk for a customer."""
 
@@ -39,7 +49,7 @@ def predict_credit_risk(customer: CreditRiskInput):
 
     risk_band = get_risk_band(probability)
 
-    decision = int(probability >= 0.30)
+    decision = int(probability >= DECISION_THRESHOLD)
 
     return {
         "predicted_probability": probability,

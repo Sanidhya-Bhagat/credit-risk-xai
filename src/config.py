@@ -10,3 +10,4 @@ OUTPUTS_DIR = PROJECT_ROOT / "outputs"
 
 # Reproducibility
 RANDOM_STATE = 42
+DECISION_THRESHOLD = 0.30
